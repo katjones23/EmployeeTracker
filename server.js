@@ -21,3 +21,30 @@ You may wish to have a separate file containing functions for performing specifi
 
 You will need to perform a variety of SQL JOINS to complete this assignment
 */
+
+require('dotenv').config()
+const mysql = require('mysql')
+const inquirer = require('inquirer')
+const consoleTable = require('console.table')
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: 'emptracker_db'
+});
+
+connection.connect(function (err) {
+    if (err) throw err;
+});
+
+inquirer.prompt({
+    type: 'list',
+    name: 'action',
+    message: 'What would you like to do?',
+    choices: ['View departments', 'View employees', 'View roles', 'Add department', 'Add employee', 'Add role', 'Update employee', 'Update role', 'Exit'],
+})
+    .then(answers => {
+        // SQL behaviors
+    });
