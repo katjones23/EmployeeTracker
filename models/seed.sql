@@ -80,4 +80,4 @@ INSERT INTO employee (first_name, last_name, role_id, manager_name)
 VALUES ("Stevie", "Keister", 8, "Josefina Poe");
 
 INSERT INTO employee (first_name, last_name, role_id, manager_name)
-VALUES ("Josefina", "Poe", 4, null);
+VALUES ("Josefina", "Poe", 6, null);
