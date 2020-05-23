@@ -1,9 +1,7 @@
 /*
-Add departments, roles, employees
+Add role, employees
 
-View employees
-
-Update employee roles
+Update employee, roles
 */
 
 require('dotenv').config()
@@ -11,6 +9,7 @@ const mysql = require('mysql')
 const inquirer = require('inquirer')
 const consoleTable = require('console.table')
 const View = require('../models/sqlview.js');
+const Add = require('../models/sqladd.js')
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -30,7 +29,7 @@ const startApp = function () {
         type: 'list',
         name: 'action',
         message: 'What would you like to do?',
-        choices: ['View departments', 'View employees', 'View roles', 'Add department', 'Add employee', 'Add role', 'Update employee', 'Update role', 'Exit'],
+        choices: ['View departments', 'View employees', 'View roles', 'Add department', 'Add role', 'Add employee', 'Update employee', 'Update role', 'Exit'],
     })
         .then(answers => {
             switch (answers.action) {
@@ -44,6 +43,18 @@ const startApp = function () {
 
                 case 'View roles':
                     viewRoles();
+                    break;
+
+                case 'Add department':
+                    addDepartment();
+                    break;
+
+                case 'Add role':
+                    addRole();
+                    break;
+
+                case 'Add employee':
+                    addEmployee();
                     break;
 
                 case 'Exit':
@@ -69,4 +80,74 @@ function viewRoles() {
     let viewQuery = new View();
     viewQuery.roles();
     setTimeout(startApp, 2000)
-}
+};
+
+function addDepartment() {
+    inquirer.prompt({
+        type: 'input',
+        name: 'deptName',
+        message: 'What is the new department\'s name?',
+    })
+        .then(answers => {
+            let addQuery = new Add();
+            addQuery.department(answers);
+            setTimeout(startApp, 2000)
+        })
+};
+
+function addRole() {
+    let questions = [
+        {
+            type: 'input',
+            name: 'roleTitle',
+            message: 'What is the new role\'s title?',
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the new role\'s salary?',
+        },
+        {
+            type: 'input',
+            name: 'deptID',
+            message: 'What is the new role\'s department ID?',
+        }
+    ];
+
+    inquirer.prompt(questions).then(answers => {
+        let addQuery = new Add();
+        addQuery.role(answers);
+        setTimeout(startApp, 2000)
+    })
+};
+
+function addEmployee() {
+    let questions = [
+        {
+            type: 'input',
+            name: 'firstName',
+            message: 'What is the new employee\'s first name?',
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: 'What is the new employee\'s last name?',
+        },
+        {
+            type: 'input',
+            name: 'roleID',
+            message: 'What is the new employee\'s role ID?',
+        },
+        {
+            type: 'input',
+            name: 'manager',
+            message: 'Who is the new employee\'s manager?',
+        }
+    ];
+
+    inquirer.prompt(questions).then(answers => {
+        let addQuery = new Add();
+        addQuery.employee(answers);
+        setTimeout(startApp, 2000)
+    })
+};
