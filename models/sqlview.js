@@ -1,4 +1,5 @@
 const mysql = require('mysql')
+const consoleTable = require('console.table')
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -33,8 +34,6 @@ function View() {
             throw err;
         }
     };
-
-
 
     this.employees = function () {
         try {
@@ -81,7 +80,7 @@ function View() {
                     let Role = (res[i].title);
                     let Salary = (res[i].salary);
                     let Department = res[i].name
-                    values.push({ ID, Role, Salary, Department})
+                    values.push({ ID, Role, Salary, Department })
                 }
 
                 console.table(['Roles'], values);
